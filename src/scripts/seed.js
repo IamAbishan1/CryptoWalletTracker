@@ -1,7 +1,7 @@
 require("dotenv").config();
-const { walletData } = require("./seeder/seedWallet");
-const Wallet = require("./models/wallet.model");
-const BalanceHistory = require("./models/balanceHistory.model");
+const { walletData } = require("./seedWallet");
+const Wallet = require("../models/wallet.model");
+const BalanceHistory = require("../models/balanceHistory.model");
 const {connectDb} = require("./config/db");
 
 const seeder = async () => {

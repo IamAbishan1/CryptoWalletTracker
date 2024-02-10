@@ -1,14 +1,15 @@
 require("dotenv").config();
-const {connectDb} = require("./config/db");
+const {connectDb} = require("./src/config/db");
 const express = require("express");
 const app = express();
 const http = require("http");
+const morgan = require("morgan")
 
 //Connection to database
 
 //declaring routes
-const MainRouter = require("./main.route");
-const { errorCatch } = require("./helper/error");
+const mainRouter = require("./src/main.route");
+const { errorCatch } = require("./src/utils/error");
 
 /** Create HTTP server. */
 const server = http.createServer(app);
@@ -16,7 +17,7 @@ const server = http.createServer(app);
 // Get port from environment and store in Express.
 const port = process.env.PORT || "3000";
 app.set("port", port);
-
+app.use(morgan("dev"));
 
 //cors policy
 // app.use((req, res, next) => {
@@ -39,7 +40,7 @@ app.set("port", port);
 //     next();
 //   });
 
-app.use("/api", MainRouter);
+app.use("/api", mainRouter);
 
 /** Catching invalid JSON payload in request **/
 app.use((err, req, res, next) => {

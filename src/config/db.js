@@ -4,7 +4,7 @@ const Wallet = require("../models/wallet.model");
 const BalanceHistory = require("../models/balanceHistory.model");
 const {
   walletData
-} = require("../seeder/seedWallet")
+} = require("../scripts/seedWallet")
 
 const connectDb = mongoose.connect(mongoUrl,
     // 	{
@@ -20,6 +20,7 @@ const connectDb = mongoose.connect(mongoUrl,
       // Clear existing data
       await Promise.all([BalanceHistory.deleteMany(), Wallet.deleteMany()]);
 
+      //Automatically seeding wallet and balance while setting up the project
       await Wallet.insertMany(walletData);
       console.log("Wallet populated successfully!");
     }
