@@ -1,31 +1,7 @@
-const { errorCatch } = require('../../helper/error')
+const { errorCatch } = require('../../utils/error')
 const Wallet = require('../../models/wallet.model')
 const BalanceHistory = require('../../models/balanceHistory.model');
 const { calculatePercentChange, getPercentChange } = require('./helper/helper');
-
-//     // API endpoint to get latest balance
-//     app.get('/balance/:walletAddress', async (req, res) => {
-//         try {
-//             const { walletAddress } = req.params;
-//             const wallet = await collection.findOne({ address: walletAddress });
-//             if (!wallet) {
-//                 return errorCatch(404, 'Wallet not found');
-//             }
-//             // Logic to calculate daily and weekly percentage change
-//             // Assume historical data is stored in another collection
-//             // Calculate percentage change based on historical data
-//             const latestBalance = wallet.balance;
-//             // Example response
-//             res.json({
-//                 balance: latestBalance,
-//                 dailyChange: 0, // Replace with actual calculation
-//                 weeklyChange: 0 // Replace with actual calculation
-//             });
-//         } catch (error) {
-//             console.error('Error fetching balance:', error);
-//             res.status(500).send('Internal Server Error');
-//         }
-//     });
 
 /**
  * 
@@ -53,6 +29,7 @@ exports.getWalletBalanceController = async(req,res)=>{
         if(!balanceHistory.length){
             const response = wallets.map(data=>{
                 return {
+                    address: data.address,
                     latestBalance : data.balance,
                     dailyChange : 0,
                     weeklyChange : 0

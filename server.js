@@ -9,7 +9,7 @@ const morgan = require("morgan")
 
 //declaring routes
 const mainRouter = require("./src/main.route");
-const { errorCatch } = require("./src/helper/error");
+const { errorCatch } = require("./src/utils/error");
 
 /** Create HTTP server. */
 const server = http.createServer(app);

@@ -1,6 +1,13 @@
-const { errorCatch } = require("../../helper/error");
+const { errorCatch } = require("../../../utils/error");
 const { validationResult } = require('express-validator');
 
+/**
+ * Middleware function to validate incoming request data using express-validator.
+ * @param {import('express').Request} req The Express request object.
+ * @param {import('express').Response} res The Express response object.
+ * @param {import('express').NextFunction} next The next middleware function in the request-response cycle.
+ * @returns {void}
+ */
 exports.validator = (req, res, next) => {
     const validationError = validationResult(req);
     if (!validationError.isEmpty()) {
