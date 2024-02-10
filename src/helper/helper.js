@@ -1,8 +1,8 @@
 const axios = require("axios");
 const mongoose = require('mongoose')
 require('dotenv')
-const BalanceHistory = require("../models/balanceHistory.model");
-const Wallet = require("../models/wallet.model");
+const BalanceHistory = require("../src/models/balanceHistory.model");
+const Wallet = require("../src/models/wallet.model");
 const { connectDb } = require("../config/db")
 
 const fetchWalletBalance = async (wAddress) => {

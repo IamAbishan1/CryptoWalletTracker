@@ -1,7 +1,7 @@
 let cron = require("node-cron");
 require("dotenv").config();
 
-const Wallet = require('./models/wallet.model')
+const Wallet = require('./src/models/wallet.model')
 const { updateWalletBalance } = require('./helper/helper'); 
 const {connectDb} = require("./config/db");
 
