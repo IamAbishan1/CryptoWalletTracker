@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  #MongoDB services
+  mongo_db:
+    container_name: db_container
+    image: mongo:latest
+    restart: always
+    volumes:
+      - ~/mongo:/data/db
+    ports:
+      - "2717:27017"
+
+  # Node API Services
+  api:
+    build: .
+    ports:
+      - 5000:5500
+    container_name: crypto_wallet
+    restart: unless-stopped
+    environment:
+      PORT: 5500
+      MONGO_URL: 
+      DB_NAME: my_db
+    depends_on:
+      - mongo_db
+volumes:
+  mongo_db: {}
