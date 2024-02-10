@@ -27,6 +27,12 @@ const { calculatePercentChange, getPercentChange } = require('./helper/helper');
 //         }
 //     });
 
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 exports.getWalletBalanceController = async(req,res)=>{
     try{
         let { wAddress , date } = req.query;
