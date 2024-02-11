@@ -10,6 +10,7 @@ pipeline {
             steps {
                 // Install dependencies
 		sh 'pwd'
+		sh 'ls -ltr'
                 sh 'cd app_build && npm install'
             }
         }
