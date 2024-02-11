@@ -3,7 +3,9 @@ const express = require("express");
 const app = express();
 const http = require("http");
 const morgan = require("morgan")
-const {connectDb} = require("./src/config/db")
+const {
+  connectDb
+} = require("./src/config/db")
 
 //declaring routes
 const mainRouter = require("./src/main.route");
@@ -44,4 +46,7 @@ server.on("listening", () => {
   console.log(`Listening on port:: http://localhost:${port}/`);
 });
 
-module.exports = {server , app};
+module.exports = {
+  server,
+  app
+};
