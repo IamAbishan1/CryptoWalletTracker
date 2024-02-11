@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     triggers {
-        githubPush(branchFilter: 'master') // Trigger the pipeline on pushes to the 'master' branch
+        githubPush(branches: ['master']) // Trigger the pipeline on pushes to the 'master' branch
     }
 
     stages {
