@@ -11,14 +11,14 @@ pipeline {
                 // Install dependencies
 		sh 'pwd'
 		sh 'ls -ltr'
-                sh 'cd app_build && npm install'
+                sh 'npm install'
             }
         }
 
         stage('Build') {
             steps {
                 // Build application 
-                sh 'cd app_build && npm start'
+                sh 'npm start'
             }
         }
 
