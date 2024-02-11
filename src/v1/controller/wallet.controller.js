@@ -10,7 +10,8 @@ const {
     getHistorylength
 } = require("../../services/balanceHistory.services");
 const {
-    getAllWallets
+    getAllWallets,
+    getWallet
 } = require('../../services/wallet.services');
 
 /**
@@ -36,11 +37,11 @@ exports.getWalletBalanceController = async (req, res) => {
         }
         date = date ? new Date(date) : new Date();   
 
-        const wallets = await getAllWallets(page, length);
+        const wallets = await getAllWallets(filterQuery,page, length);
         const balanceHistory = await getAllBalanceHistory(filterQuery, page, length);
         const historyLength = await getHistorylength();
-        if (!wallets) {
-            return errorCatch(req, res, 404, "No data!! Run seed.js")
+        if (!wallets || !wallets.length) {
+            return errorCatch(req, res, 404, "No data found!")
         }
 
         if (historyLength && !balanceHistory.length) {
@@ -75,7 +76,7 @@ exports.getWalletBalanceController = async (req, res) => {
         })
 
         res.json({
-            "wallet": response
+            "wallets": response
         })
     } catch (err) {
         console.error(err);

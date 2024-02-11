@@ -39,7 +39,7 @@ const doJob = async () => {
 }
 
 // Schedule every 5 minutes
-cron.schedule("*/5 * * * *", async () => {
+cron.schedule("*/2 * * * *", async () => {
   await validateApiKey();
   await doJob();
   console.log("Wallet updated successfully.");
