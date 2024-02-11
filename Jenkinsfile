@@ -1,8 +1,8 @@
 pipeline {
     agent any
 
-    triggers {
-        githubPush(branches: ['master']) // Trigger the pipeline on pushes to the 'master' branch
+    //triggers {
+      //  githubPush(branches: ['master']) // Trigger the pipeline on pushes to the 'master' branch
     }
 
     stages {
