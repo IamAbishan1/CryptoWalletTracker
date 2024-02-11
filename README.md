@@ -75,7 +75,7 @@ npm run cron
 ```
 4. Get the swagger documentation by executing
 ```bash
-npm swagger-autogen
+npm run swagger-autogen
 ```
 4. Use the provided API endpoints to interact with the application.
 

@@ -8,7 +8,7 @@ const doc = {
   host: "localhost:5500",
   schemes: ["http"],
 };
-const outputFile = "./swagger-output.json";
+const outputFile = "../../swagger-output.json";
 
 const endpoints = ["./server.js"];
 
