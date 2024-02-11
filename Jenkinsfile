@@ -18,7 +18,8 @@ pipeline {
         stage('Build') {
             steps {
                 // Build application 
-                sh 'nohup npm start &'
+                sh 'npm run build'
+                sh 'npm start'
             }
         }
 
