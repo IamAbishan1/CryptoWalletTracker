@@ -17,7 +17,8 @@ pipeline {
 
         stage('Build') {
             steps {
-                // Build application 
+                // Build application source 
+		sh '/var/lib/jenkins/.nvm/nvm.sh'
                 sh 'npm run build'
                 sh 'npm start'
             }
