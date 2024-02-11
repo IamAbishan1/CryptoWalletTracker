@@ -6,11 +6,16 @@ const Wallet = require('../models/wallet.model')
  * @returns {Promise<Array>} - A promise that resolves to an array of wallet objects containing address and balance.
  * @throws {Error} - If an error occurs during the operation.
  */
-exports.getAllWallets = async (page,length) => {
-    const wallets = await Wallet.find({}, "address balance")
-        .skip((page-1) * length)
-        .limit(length)
-        .lean();
+exports.getAllWallets = async (page, length) => {
+    try {
+        const wallets = await Wallet.find({}, "address balance")
+            .skip((page - 1) * length)
+            .limit(length)
+            .lean();
 
-    return wallets || [];
+        return wallets || [];
+    } catch (err) {
+        console.error(err);
+        throw err;
+    }
 }

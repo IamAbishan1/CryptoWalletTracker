@@ -45,7 +45,17 @@ npm install
    BSCSCAN_API_KEY="YOUR_BSCSCAN_API_KEY"
 ```
 
-4. Start the server:
+4. Seed data
+```bash
+npm run seed
+```
+
+5. Start cron
+```bash
+npm run cron
+```
+
+6. Start the server:
 ```bash 
 npm start
 ```
@@ -55,7 +65,15 @@ npm start
 ```bash 
 npm start
 ```
-2. Use the provided API endpoints to interact with the application.
+2. Seed the data by executing
+```bash
+npm run seed
+```
+3. Start the cron-job by executing
+```bash
+npm run cron
+```
+4. Use the provided API endpoints to interact with the application.
 
 
 ## Project Structure
@@ -80,15 +98,16 @@ CryptoWalletTracker/
 │   │   └── validator.js             # Validation utility
 │   ├── v1/
 │   │   ├── controller/
-│   │   │   ├── helper/              # Helper functions for controllers
-│   │   │   │   ├── helper.js        # Helper functions
-│   │   │   │   └── validator.js     # Validation functions
 │   │   │   └── wallet.controller.js # Controller for wallet-related operations
+│   │   ├── helper/              # Helper functions for controllers
+│   │   │   ├── helper.js        # Helper functions
+│   │   │   └── validator.js     # Validation functions
 │   │   ├── middleware/              # Middleware for v1 routes
 │   │   └── routes/                   # Routes for v1 API endpoints
 │   │      ├── index.route.js        # Index route
 │   │      └── wallet.route.js       # Wallet route
-│   └── main.route.js                # Main route file for application entry point
+│   └── main.route.js                # Main route file for application entry point  
+├──  test/
 ├── .env                             # Environment variables file
 ├── .env.example                     # Example environment variables file
 ├── .gitignore                       # Gitignore file

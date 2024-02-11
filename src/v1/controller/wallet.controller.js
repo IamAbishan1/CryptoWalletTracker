@@ -1,7 +1,17 @@
-const { errorCatch } = require('../../utils/error')
-const { calculatePercentChange, getPercentChange } = require('../helper/helper');
-const { getAllBalanceHistory } = require("../../services/balanceHistory.services");
-const { getAllWallets } = require('../../services/wallet.services');
+const {
+    errorCatch
+} = require('../../utils/error')
+const {
+    calculatePercentChange,
+    getPercentChange
+} = require('../helper/helper');
+const {
+    getAllBalanceHistory,
+    getHistorylength
+} = require("../../services/balanceHistory.services");
+const {
+    getAllWallets
+} = require('../../services/wallet.services');
 
 /**
  * Controller function to get wallet balance information.
@@ -11,40 +21,51 @@ const { getAllWallets } = require('../../services/wallet.services');
  * @returns {Promise<void>} - Promise representing the operation completion.
  * @throws {Error} - If an error occurs during the operation.
  */
-exports.getWalletBalanceController = async(req,res)=>{
-    try{
-        let { wAddress , date, page = 1, length = 25 } = req.query;
+exports.getWalletBalanceController = async (req, res) => {
+    try {
+        let {
+            wAddress,
+            date,
+            page = 1,
+            length = 25
+        } = req.query;
 
         let filterQuery = {};
-        if(wAddress){
+        if (wAddress) {
             filterQuery.address = wAddress
         }
-        date = date ? new Date(date) : new Date(); 
+        date = date ? new Date(date) : new Date();   
 
         const wallets = await getAllWallets(page, length);
-        const balanceHistory = await getAllBalanceHistory(filterQuery,page,length);
-
-        if(!wallets){
-            return errorCatch(404,"No data!! Run seed.js")
+        const balanceHistory = await getAllBalanceHistory(filterQuery, page, length);
+        const historyLength = await getHistorylength();
+        if (!wallets) {
+            return errorCatch(req, res, 404, "No data!! Run seed.js")
         }
 
-        if(!balanceHistory.length){
-            const response = wallets.map(data=>{
+        if (historyLength && !balanceHistory.length) {
+            return errorCatch(req, res, 404, "Wallet does not exist.")
+        }
+
+        if (!balanceHistory.length) {
+            const response = wallets.map(data => {
                 return {
                     address: data.address,
-                    latestBalance : data.balance,
-                    dailyChange : 0,
-                    weeklyChange : 0
+                    latestBalance: data.balance,
+                    dailyChange: 0,
+                    weeklyChange: 0
                 }
             })
 
-            return res.json({wallets: response})
+            return res.json({
+                wallets: response
+            })
         }
         const walletData = calculatePercentChange(date, balanceHistory)
-        const response = walletData.map(data=>{
+        const response = walletData.map(data => {
             const balance = {};
-            const wallet = wallets.filter(wallet=>wallet.address == data.address);
-            
+            const wallet = wallets.filter(wallet => wallet.address == data.address);
+
             balance.address = wallet[0].address
             balance.latestBalance = wallet[0].balance
             balance.dailyChange = getPercentChange(parseFloat(data.balanceChanges.todayData), parseFloat(data.balanceChanges.prevData)).toFixed(2);
@@ -53,9 +74,11 @@ exports.getWalletBalanceController = async(req,res)=>{
             return balance;
         })
 
-        res.json({"wallet":response})
-    }catch(err){
+        res.json({
+            "wallet": response
+        })
+    } catch (err) {
         console.error(err);
-        errorCatch(req,res);
+        errorCatch(req, res);
     }
 }
