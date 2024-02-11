@@ -9,6 +9,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 // Install dependencies
+		sh 'pwd'
                 sh 'cd app_build && npm install'
             }
         }
