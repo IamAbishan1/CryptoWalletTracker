@@ -18,8 +18,8 @@ pipeline {
         stage('Build') {
             steps {
                 // Build application source 
-		sh '/var/lib/jenkins/.nvm/nvm.sh'
-                sh 'npm run build'
+		//sh '/var/lib/jenkins/.nvm/nvm.sh'
+                //sh 'npm run build'
                 sh 'npm start'
             }
         }
