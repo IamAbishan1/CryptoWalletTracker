@@ -1,7 +1,7 @@
 const express = require("express");
 const { query } = require('express-validator');
 const router = express.Router({mergeParams: true});
-const { validator } = require("../controller/helper/validator");
+const { validator } = require("../helper/validator");
 const moment = require("moment");
 
 //Validation here

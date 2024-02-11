@@ -3,7 +3,9 @@ const mongoose = require('mongoose')
 require('dotenv')
 const BalanceHistory = require("../src/models/balanceHistory.model");
 const Wallet = require("../src/models/wallet.model");
-const { connectDb } = require("../config/db")
+const {
+    connectDb
+} = require("../config/db")
 
 /**
  * Fetches the balance of a wallet from the Binance Smart Chain (BSC) using the BscScan API.
@@ -12,13 +14,28 @@ const { connectDb } = require("../config/db")
  * @returns {Promise<number>} A Promise that resolves with the balance of the wallet in BNB (Binance Coin).
  */
 const fetchWalletBalance = async (wAddress) => {
-  const endPoint = `https://api.bscscan.com/api?module=account&action=balance&address=${wAddress}&tag=latest&apikey=${process.env.BSCSCAN_API_KEY}`;
+    try {
+        const endPoint = `https://api.bscscan.com/api?module=account&action=balance&address=${wAddress}&tag=latest&apikey=${process.env.BSCSCAN_API_KEY}`;
 
-  const response = await axios.get(endPoint);
-  // Convert the balance from wei to BNB
-  const balance = (response.data.result) / 1e18 || 0; 
+        if (response.status === 200 && response.data.status === '1') {
+            const response = await axios.get(endPoint);
+            // Convert the balance from wei to BNB
+            const balance = (response.data.result) / 1e18 || 0;
+            return balance;
+        } else {
+            throw new Error('Invalid response from BSCScan API');
+        }
 
-  return balance;
+    } catch (error) {
+        if (error.response) {
+            console.error('BSCScan API responded with error status:', error.response.status);
+        } else if (error.request) {
+            console.error('No response received from BSCScan API');
+        } else {
+            console.error('Error occurred while fetching data from BSCScan API:', error.message);
+        }
+        throw error;
+    }
 };
 
 /**
@@ -27,18 +44,22 @@ const fetchWalletBalance = async (wAddress) => {
  * @param {string} wAddress The address of the wallet to update.
  * @returns {Promise<void>} A Promise that resolves once the update is complete.
  */
-exports.updateWalletBalance = async(wAddress)=>{
+exports.updateWalletBalance = async (wAddress) => {
     // Fetch wallet data and balance history
-    const [walletData , bHistory]= await Promise.all([Wallet.findOne({address:wAddress}),BalanceHistory.findOne({address:wAddress})])
-    
-    const historyData = { 
-        balance : walletData.balance,
-        date : new Date().toISOString()
+    const [walletData, bHistory] = await Promise.all([Wallet.findOne({
+        address: wAddress
+    }), BalanceHistory.findOne({
+        address: wAddress
+    })])
+
+    const historyData = {
+        balance: walletData.balance,
+        date: new Date().toISOString()
     }
-    if(bHistory){
+    if (bHistory) {
         bHistory.balanceHistory.push(historyData)
         bHistory.save();
-    }else{
+    } else {
         const BalanceHistoryObj = new BalanceHistory({
             address: wAddress,
             balanceHistory: [historyData]
@@ -48,4 +69,3 @@ exports.updateWalletBalance = async(wAddress)=>{
     walletData.balance = await fetchWalletBalance(wAddress)
     await walletData.save()
 }
-

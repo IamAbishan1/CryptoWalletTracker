@@ -61,7 +61,6 @@ exports.calculatePercentChange = (day, bHistory) =>{
  * @param {number} initialValue The initial value.
  * @returns {number} The percentage change between the final and initial values.
  */
-
 exports.getPercentChange = (finalValue, initalValue) =>{
     return ((finalValue - initalValue) / finalValue) * 100;
 }
