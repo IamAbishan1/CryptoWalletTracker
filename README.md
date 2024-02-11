@@ -73,6 +73,10 @@ npm run seed
 ```bash
 npm run cron
 ```
+4. Get the swagger documentation by executing
+```bash
+npm swagger-autogen
+```
 4. Use the provided API endpoints to interact with the application.
 
 
@@ -90,7 +94,8 @@ CryptoWalletTracker/
 │   ├── scripts/
 │   │   ├── seed.js                   # Script for seeding the database
 │   │   ├── seedData.js               # Seed data for database population
-│   │   └── seedWallet.js             # Script for seeding wallet data
+│   │   ├── seedWallet.js             # Script for seeding wallet data
+│   │   └── swagger.js                # Script for swagger documentation of endpoints
 │   ├── services/
 │   │   └── walletService.js         # Business logic and data processing for wallets
 │   ├── utils/
