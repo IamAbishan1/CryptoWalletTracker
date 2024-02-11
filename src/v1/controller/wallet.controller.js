@@ -1,17 +1,20 @@
 const { errorCatch } = require('../../utils/error')
-const Wallet = require('../../models/wallet.model')
-const BalanceHistory = require('../../models/balanceHistory.model');
 const { calculatePercentChange, getPercentChange } = require('./helper/helper');
+const { getAllBalanceHistory } = require("../../services/balanceHistory.services");
+const { getAllWallets } = require('../../services/wallet.services');
 
 /**
- * 
- * @param {*} req 
- * @param {*} res 
- * @returns 
+ * Controller function to get wallet balance information.
+ * @async
+ * @param {object} req - Express request object.
+ * @param {object} res - Express response object.
+ * @returns {Promise<void>} - Promise representing the operation completion.
+ * @throws {Error} - If an error occurs during the operation.
  */
 exports.getWalletBalanceController = async(req,res)=>{
     try{
-        let { wAddress , date } = req.query;
+        let { wAddress , date, page = 1, length = 25 } = req.query;
+        console.log("hhere",page)
 
         let filterQuery = {};
         if(wAddress){
@@ -19,8 +22,8 @@ exports.getWalletBalanceController = async(req,res)=>{
         }
         date = date ? new Date(date) : new Date(); 
 
-        const wallets = await Wallet.find({},'address balance').lean();
-        const balanceHistory = await BalanceHistory.find(filterQuery,'-_id -__v').lean();
+        const wallets = await getAllWallets(page, length);
+        const balanceHistory = await getAllBalanceHistory(filterQuery,page,length);
 
         if(!wallets){
             return errorCatch(404,"No data!! Run seed.js")
@@ -43,6 +46,7 @@ exports.getWalletBalanceController = async(req,res)=>{
             const balance = {};
             const wallet = wallets.filter(wallet=>wallet.address == data.address);
             
+            balance.address = wallet[0].address
             balance.latestBalance = wallet[0].balance
             balance.dailyChange = getPercentChange(parseFloat(data.balanceChanges.todayData), parseFloat(data.balanceChanges.prevData)).toFixed(2);
             balance.weeklyChange = getPercentChange(parseFloat(data.balanceChanges.thisWeekData), parseFloat(data.balanceChanges.prevWeekData)).toFixed(2);
@@ -55,5 +59,4 @@ exports.getWalletBalanceController = async(req,res)=>{
         console.error(err);
         errorCatch(req,res);
     }
-
 }
