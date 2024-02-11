@@ -15,19 +15,22 @@ const connectDb = mongoose.connect(mongoUrl,
   .then(async () => {
     console.log('Database Connected');
 
-    const wallets = await Wallet.find({}, '_id').lean();
-    if (!wallets.length) {
-      // Clear existing data
-      await Promise.all([BalanceHistory.deleteMany(), Wallet.deleteMany()]);
-
+    const [wallets, balanceHistory] = await Promise.all([Wallet.find({}, '_id').lean(),BalanceHistory.find({},'_id').lean()]);
+    if (!wallets.length && !balanceHistory.length) {
       //Automatically seeding wallet and balance while setting up the project
       await Wallet.insertMany(walletData);
       console.log("Wallet populated successfully!");
     }
   })
   .catch((err) => {
-    console.log(err);
+    // console.error(err);
     console.log("Error connecting database!!!.");
   });
 
-module.exports = connectDb;
+// Function to close the mongoose connection
+const closeDb = async () => {
+  await mongoose.disconnect();
+  console.log('Database connection closed.');
+};
+
+module.exports = { connectDb, closeDb };
