@@ -1,4 +1,4 @@
-const { errorCatch } = require("../../../utils/error");
+const { errorCatch } = require("../../utils/error");
 const { validationResult } = require('express-validator');
 
 /**

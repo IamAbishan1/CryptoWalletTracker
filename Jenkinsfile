@@ -9,14 +9,14 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 // Install dependencies
-                sh 'npm install'
+                sh 'cd app_build && npm install'
             }
         }
 
         stage('Build') {
             steps {
                 // Build application 
-                sh 'npm start'
+                sh 'cd app_build && npm start'
             }
         }
 

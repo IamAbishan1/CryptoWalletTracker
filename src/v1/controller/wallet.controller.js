@@ -1,5 +1,5 @@
 const { errorCatch } = require('../../utils/error')
-const { calculatePercentChange, getPercentChange } = require('./helper/helper');
+const { calculatePercentChange, getPercentChange } = require('../helper/helper');
 const { getAllBalanceHistory } = require("../../services/balanceHistory.services");
 const { getAllWallets } = require('../../services/wallet.services');
 
@@ -14,7 +14,6 @@ const { getAllWallets } = require('../../services/wallet.services');
 exports.getWalletBalanceController = async(req,res)=>{
     try{
         let { wAddress , date, page = 1, length = 25 } = req.query;
-        console.log("hhere",page)
 
         let filterQuery = {};
         if(wAddress){
