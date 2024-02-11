@@ -1,4 +1,4 @@
 /node_modules
 .env
-.docker.env
+docker.env
 swagger-output.json
