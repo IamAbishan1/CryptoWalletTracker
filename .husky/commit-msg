@@ -1,13 +1,16 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
+#!/bin/bash
 
+# Validate commit message format
 if ! head -1 "$1" | grep -qE "^(feat|fix|ci|chore|docs|test|style|refactor|pref|build|revert)(\(.+?\))?: .{1,}$"; then
-echo "❌ Aborting commit ❌. Your commit message is invalid. Please check conventional commit message and try again.✅" >&2
-exit 1
-
+    echo "❌ Aborting commit ❌. Your commit message is invalid. Please check conventional commit message and try again. ✅" >&2
+    exit 1
 fi
-if ! head -1 "$1" | grep -qe "^.{1,200}$"; then
-echo "❌ Aborting commit ❌. Your commit message is too long. 🎋🎍" >&2
-exit
 
+# Validate commit message length
+if ! head -1 "$1" | grep -qE "^.{1,200}$"; then
+    echo "❌ Aborting commit ❌. Your commit message is too long. 🎋🎍" >&2
+    exit 1
 fi
+
+# If all validations pass, allow the commit
+exit 0
